@@ -41,7 +41,7 @@ Create a `.env` file in the `server` directory:
 
 ```bash
 cd server
-cp env.example .env
+cp .env
 ```
 
 Edit the `.env` file and add your Hugging Face API key:
