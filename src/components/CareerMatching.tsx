@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
+import { ActiveTab } from '../App';
 import { Star, TrendingUp, DollarSign, MapPin, Clock, Users, ArrowRight, BookOpen } from 'lucide-react';
 import { UserProfile, CareerMatch } from '../types/user';
 
 interface CareerMatchingProps {
   userProfile: UserProfile;
+  setActiveTab?: (tab: ActiveTab) => void;
 }
 
-const CareerMatching: React.FC<CareerMatchingProps> = ({ userProfile }) => {
+const CareerMatching: React.FC<CareerMatchingProps> = ({ userProfile, setActiveTab }) => {
   const [selectedCareer, setSelectedCareer] = useState<CareerMatch | null>(null);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 
@@ -15,12 +17,15 @@ const CareerMatching: React.FC<CareerMatchingProps> = ({ userProfile }) => {
   if (careerMatches.length === 0) {
     return (
       <div className="text-center py-12">
-        <div className="bg-gray-100 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-6">
+        <div className="bg-gray-100 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-6 dark:bg-[#232a3d]">
           <Star className="w-12 h-12 text-gray-400" />
         </div>
-        <h3 className="text-xl font-semibold text-gray-900 mb-2">No Career Matches Yet</h3>
-        <p className="text-gray-600 mb-6">Complete your assessment to discover personalized career recommendations.</p>
-        <button className="bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 transition-colors">
+        <h3 className="text-xl font-semibold text-gray-900 mb-2 dark:text-white">No Career Matches Yet</h3>
+        <p className="text-gray-600 mb-6 dark:text-gray-300">Complete your assessment to discover personalized career recommendations.</p>
+        <button
+          className="bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 transition-colors dark:bg-blue-700 dark:hover:bg-blue-800"
+          onClick={() => setActiveTab && setActiveTab('assessment')}
+        >
           Start Assessment
         </button>
       </div>
@@ -28,23 +33,23 @@ const CareerMatching: React.FC<CareerMatchingProps> = ({ userProfile }) => {
   }
 
   return (
-    <div className="space-y-6">
+  <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">Career Matches</h2>
-          <p className="text-gray-600">Personalized recommendations based on your profile</p>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Career Matches</h2>
+          <p className="text-gray-600 dark:text-gray-300">Personalized recommendations based on your profile</p>
         </div>
         <div className="flex items-center space-x-2">
           <button
             onClick={() => setViewMode('grid')}
-            className={`p-2 rounded-lg ${viewMode === 'grid' ? 'bg-blue-100 text-blue-600' : 'text-gray-600 hover:bg-gray-100'}`}
+            className={`p-2 rounded-lg ${viewMode === 'grid' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-400' : 'text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-[#232a3d]'}`}
           >
             Grid
           </button>
           <button
             onClick={() => setViewMode('list')}
-            className={`p-2 rounded-lg ${viewMode === 'list' ? 'bg-blue-100 text-blue-600' : 'text-gray-600 hover:bg-gray-100'}`}
+            className={`p-2 rounded-lg ${viewMode === 'list' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-400' : 'text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-[#232a3d]'}`}
           >
             List
           </button>
@@ -52,11 +57,11 @@ const CareerMatching: React.FC<CareerMatchingProps> = ({ userProfile }) => {
       </div>
 
       {/* Career Matches */}
-      <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6' : 'space-y-4'}>
+  <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6' : 'space-y-4'}>
         {careerMatches.map((career, index) => (
           <div
             key={index}
-            className={`bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-200 cursor-pointer ${
+            className={`bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-200 cursor-pointer dark:bg-[#1a2233] dark:border-[#232a3d] dark:text-white ${
               viewMode === 'list' ? 'flex items-center space-x-6' : ''
             }`}
             onClick={() => setSelectedCareer(career)}
@@ -75,12 +80,12 @@ const CareerMatching: React.FC<CareerMatchingProps> = ({ userProfile }) => {
 
             {/* Career Info */}
             <div className="flex-1">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">{career.title}</h3>
-              <p className="text-gray-600 text-sm mb-4 line-clamp-2">{career.description}</p>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2 dark:text-white">{career.title}</h3>
+              <p className="text-gray-600 text-sm mb-4 line-clamp-2 dark:text-gray-300">{career.description}</p>
 
               {/* Career Stats */}
               <div className={`${viewMode === 'list' ? 'flex items-center space-x-6' : 'space-y-2'}`}>
-                <div className="flex items-center space-x-2 text-sm text-gray-600">
+                <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-300">
                   <DollarSign className="w-4 h-4 text-green-600" />
                   <span>{career.salaryRange}</span>
                 </div>
@@ -135,7 +140,7 @@ const CareerDetailModal: React.FC<CareerDetailModalProps> = ({ career, onClose, 
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+      <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto dark:bg-[#1a2233] dark:text-white">
         <div className="p-8">
           {/* Header */}
           <div className="flex items-center justify-between mb-6">
