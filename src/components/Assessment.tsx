@@ -75,36 +75,32 @@ const Assessment: React.FC<AssessmentProps> = ({ onComplete, currentProfile }) =
   };
 
   return (
-    <div className="max-w-4xl mx-auto">
+  <div className="max-w-4xl mx-auto">
       {/* Progress Bar */}
-      <div className="mb-8">
-        <div className="flex items-center justify-between mb-4">
-          {steps.map((step, index) => {
-            const IconComponent = step.icon;
-            const isActive = step.id === currentStep;
-            const isCompleted = index < currentStepIndex;
-            
-            return (
-              <div key={step.id} className="flex flex-col items-center space-y-2">
-                <div className={`w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all duration-200 ${
-                  isActive 
-                    ? 'bg-blue-600 border-blue-600 text-white' 
-                    : isCompleted 
-                      ? 'bg-green-500 border-green-500 text-white'
-                      : 'bg-gray-100 border-gray-300 text-gray-400'
-                }`}>
-                  {isCompleted ? <Check className="w-6 h-6" /> : <IconComponent className="w-6 h-6" />}
-                </div>
-                <div className="text-center">
-                  <p className={`text-sm font-medium ${isActive ? 'text-blue-600' : 'text-gray-600'}`}>
-                    {step.title}
-                  </p>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-        <div className="w-full bg-gray-200 rounded-full h-2">
+  <div className="mb-8">
+    <h2 className="text-3xl font-bold text-gray-900 mb-2 dark:text-white">Skills Assessment</h2>
+    <p className="text-gray-600 dark:text-white mb-6">Evaluate your technical and soft skills</p>
+    <div className="flex items-center justify-between mb-4">
+      {steps.map((step, index) => {
+        const IconComponent = step.icon;
+        const isActive = step.id === currentStep;
+        const isCompleted = index < currentStepIndex;
+        return (
+          <div key={step.id} className="flex flex-col items-center space-y-2">
+            <div className={`w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all duration-200 ${
+              isActive 
+                ? 'bg-blue-600 border-blue-600 text-white' 
+                : isCompleted 
+                  ? 'bg-green-500 border-green-500 text-white'
+                  : 'bg-gray-100 border-gray-300 text-gray-400 dark:bg-[#232a3d] dark:border-[#232a3d] dark:text-gray-400'
+            }`}>
+              {isCompleted ? <Check className="w-6 h-6" /> : <IconComponent className="w-6 h-6" />}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+        <div className="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
           <div 
             className="bg-gradient-to-r from-blue-600 to-indigo-600 h-2 rounded-full transition-all duration-300"
             style={{ width: `${((currentStepIndex + 1) / steps.length) * 100}%` }}
@@ -113,22 +109,22 @@ const Assessment: React.FC<AssessmentProps> = ({ onComplete, currentProfile }) =
       </div>
 
       {/* Step Content */}
-      <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 min-h-[600px]">
+  <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 min-h-[600px] dark:bg-[#1a2233] dark:border-[#232a3d] dark:text-white">
         <div className="mb-6">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+          <h2 className="text-2xl font-bold text-gray-900 mb-2 dark:text-white">
             {steps[currentStepIndex].title}
           </h2>
-          <p className="text-gray-600">{steps[currentStepIndex].description}</p>
+          <p className="text-gray-600 dark:text-gray-300">{steps[currentStepIndex].description}</p>
         </div>
 
         {renderStepContent()}
 
         {/* Navigation */}
-        <div className="flex justify-between mt-8 pt-6 border-t border-gray-200">
+  <div className="flex justify-between mt-8 pt-6 border-t border-gray-200 dark:border-[#232a3d]">
           <button
             onClick={handlePrevious}
             disabled={currentStepIndex === 0}
-            className="flex items-center space-x-2 px-6 py-3 text-gray-600 hover:text-gray-900 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="flex items-center space-x-2 px-6 py-3 text-gray-600 hover:text-gray-900 disabled:opacity-50 disabled:cursor-not-allowed transition-colors dark:text-gray-400 dark:hover:text-white"
           >
             <ChevronLeft className="w-5 h-5" />
             <span>Previous</span>
@@ -136,7 +132,7 @@ const Assessment: React.FC<AssessmentProps> = ({ onComplete, currentProfile }) =
           
           <button
             onClick={handleNext}
-            className="flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-200"
+            className="flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-200 dark:bg-gradient-to-r dark:from-blue-700 dark:to-indigo-800"
           >
             <span>{currentStepIndex === steps.length - 1 ? 'Complete Assessment' : 'Next'}</span>
             <ChevronRight className="w-5 h-5" />
@@ -191,7 +187,7 @@ const SkillsAssessment: React.FC<SkillsAssessmentProps> = ({ profile, updateSkil
     <div className="space-y-8">
       {/* Technical Skills */}
       <div>
-        <h3 className="text-xl font-semibold text-gray-900 mb-4">Technical Skills</h3>
+  <h3 className="text-xl font-semibold text-gray-900 mb-4 dark:text-white">Technical Skills</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {technicalSkillOptions.map(skillName => {
             const selectedSkill = profile.skills.technical.find(s => s.name === skillName);
@@ -199,12 +195,14 @@ const SkillsAssessment: React.FC<SkillsAssessmentProps> = ({ profile, updateSkil
             
             return (
               <div key={skillName} className={`p-4 border-2 rounded-xl transition-all duration-200 ${
-                isSelected ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'
+                isSelected
+                  ? 'border-blue-500 bg-blue-50 dark:bg-[#1e1e1e] dark:border-blue-400 dark:text-white dark:shadow-md dark:hover:bg-[#232a3d]'
+                  : 'border-gray-200 hover:border-gray-300 dark:border-[#232a3d] dark:bg-[#1e1e1e] dark:text-gray-300 dark:shadow dark:hover:bg-[#232a3d]'
               }`}>
                 <div className="flex items-center justify-between mb-2">
                   <button
                     onClick={() => handleSkillToggle('technical', skillName)}
-                    className="font-medium text-gray-900 hover:text-blue-600 transition-colors"
+                    className="font-medium text-gray-900 hover:text-blue-600 transition-colors dark:text-white dark:hover:text-blue-400"
                   >
                     {skillName}
                   </button>
@@ -212,7 +210,7 @@ const SkillsAssessment: React.FC<SkillsAssessmentProps> = ({ profile, updateSkil
                 </div>
                 {isSelected && (
                   <div>
-                    <p className="text-sm text-gray-600 mb-2">Proficiency Level:</p>
+                    <p className="text-sm text-gray-600 mb-2 dark:text-gray-300">Proficiency Level:</p>
                     <div className="flex space-x-2">
                       {[1, 2, 3, 4, 5].map(level => (
                         <button
@@ -220,15 +218,15 @@ const SkillsAssessment: React.FC<SkillsAssessmentProps> = ({ profile, updateSkil
                           onClick={() => handleProficiencyChange('technical', skillName, level)}
                           className={`w-8 h-8 rounded-full text-sm font-semibold transition-colors ${
                             selectedSkill.proficiency >= level
-                              ? 'bg-blue-600 text-white'
-                              : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
+                              ? 'bg-blue-600 text-white dark:bg-blue-700 dark:text-white'
+                              : 'bg-gray-200 text-gray-600 hover:bg-gray-300 dark:bg-[#232a3d] dark:text-gray-300 dark:hover:bg-blue-900'
                           }`}
                         >
                           {level}
                         </button>
                       ))}
                     </div>
-                    <p className="text-xs text-gray-500 mt-1">
+                    <p className="text-xs text-gray-500 mt-1 dark:text-gray-400">
                       {selectedSkill.proficiency === 1 && 'Beginner'}
                       {selectedSkill.proficiency === 2 && 'Basic'}
                       {selectedSkill.proficiency === 3 && 'Intermediate'}
@@ -245,7 +243,7 @@ const SkillsAssessment: React.FC<SkillsAssessmentProps> = ({ profile, updateSkil
 
       {/* Soft Skills */}
       <div>
-        <h3 className="text-xl font-semibold text-gray-900 mb-4">Soft Skills</h3>
+        <h3 className="text-xl font-semibold text-gray-900 mb-4 dark:text-white">Soft Skills</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {softSkillOptions.map(skillName => {
             const selectedSkill = profile.skills.soft.find(s => s.name === skillName);
@@ -253,12 +251,14 @@ const SkillsAssessment: React.FC<SkillsAssessmentProps> = ({ profile, updateSkil
             
             return (
               <div key={skillName} className={`p-4 border-2 rounded-xl transition-all duration-200 ${
-                isSelected ? 'border-green-500 bg-green-50' : 'border-gray-200 hover:border-gray-300'
+                isSelected
+                  ? 'border-green-500 bg-green-50 dark:bg-[#1e1e1e] dark:border-green-400 dark:text-white dark:shadow-md dark:hover:bg-[#232a3d]'
+                  : 'border-gray-200 hover:border-gray-300 dark:border-[#232a3d] dark:bg-[#1e1e1e] dark:text-gray-300 dark:shadow dark:hover:bg-[#232a3d]'
               }`}>
                 <div className="flex items-center justify-between mb-2">
                   <button
                     onClick={() => handleSkillToggle('soft', skillName)}
-                    className="font-medium text-gray-900 hover:text-green-600 transition-colors"
+                    className="font-medium text-gray-900 hover:text-green-600 transition-colors dark:text-white dark:hover:text-green-400"
                   >
                     {skillName}
                   </button>
@@ -266,7 +266,7 @@ const SkillsAssessment: React.FC<SkillsAssessmentProps> = ({ profile, updateSkil
                 </div>
                 {isSelected && (
                   <div>
-                    <p className="text-sm text-gray-600 mb-2">Proficiency Level:</p>
+                    <p className="text-sm text-gray-600 mb-2 dark:text-gray-300">Proficiency Level:</p>
                     <div className="flex space-x-2">
                       {[1, 2, 3, 4, 5].map(level => (
                         <button
@@ -275,7 +275,7 @@ const SkillsAssessment: React.FC<SkillsAssessmentProps> = ({ profile, updateSkil
                           className={`w-8 h-8 rounded-full text-sm font-semibold transition-colors ${
                             selectedSkill.proficiency >= level
                               ? 'bg-green-600 text-white'
-                              : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
+                              : 'bg-gray-200 text-gray-600 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-400 dark:hover:bg-green-900'
                           }`}
                         >
                           {level}
@@ -354,7 +354,7 @@ const InterestsAssessment: React.FC<InterestsAssessmentProps> = ({ profile, upda
 
   return (
     <div className="space-y-6">
-      <p className="text-gray-600 mb-6">
+  <p className="text-gray-600 mb-6 dark:text-white">
         Rate your interest level in each category based on the Holland Code (RIASEC) framework.
         This helps identify careers that align with your natural preferences.
       </p>
@@ -364,20 +364,20 @@ const InterestsAssessment: React.FC<InterestsAssessmentProps> = ({ profile, upda
         const score = currentInterest?.score || 0;
         
         return (
-          <div key={category.type} className="border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow">
+          <div key={category.type} className="border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow dark:bg-[#181e2e] dark:border-[#232a3d]">
             <div className="flex items-start space-x-4">
               <div className={`${category.color} w-12 h-12 rounded-xl flex items-center justify-center`}>
                 <span className="text-white font-bold text-lg">{category.type[0]}</span>
               </div>
               <div className="flex-1">
-                <h4 className="text-lg font-semibold text-gray-900 mb-2">{category.type}</h4>
-                <p className="text-gray-700 mb-1">{category.description}</p>
-                <p className="text-sm text-gray-500 mb-4">{category.examples}</p>
+                <h4 className="text-lg font-semibold text-gray-900 mb-2 dark:text-white">{category.type}</h4>
+                <p className="text-gray-700 mb-1 dark:text-white">{category.description}</p>
+                <p className="text-sm text-gray-500 mb-4 dark:text-gray-200">{category.examples}</p>
                 
                 <div className="space-y-2">
-                  <p className="text-sm font-medium text-gray-700">Interest Level:</p>
+                  <p className="text-sm font-medium text-gray-700 dark:text-white">Interest Level:</p>
                   <div className="flex items-center space-x-2">
-                    <span className="text-sm text-gray-500">Low</span>
+                    <span className="text-sm text-gray-500 dark:text-gray-200">Low</span>
                     {[1, 2, 3, 4, 5].map(level => (
                       <button
                         key={level}
@@ -391,7 +391,7 @@ const InterestsAssessment: React.FC<InterestsAssessmentProps> = ({ profile, upda
                         {level}
                       </button>
                     ))}
-                    <span className="text-sm text-gray-500">High</span>
+                    <span className="text-sm text-gray-500 dark:text-gray-200">High</span>
                   </div>
                 </div>
               </div>
@@ -413,9 +413,9 @@ const GoalsAssessment: React.FC<GoalsAssessmentProps> = ({ profile, setProfile }
   return (
     <div className="space-y-6">
       <div>
-        <h4 className="text-lg font-semibold text-gray-900 mb-4">Career Aspirations</h4>
+        <h4 className="text-lg font-semibold text-gray-900 mb-4 dark:text-white">Career Aspirations</h4>
         <textarea
-          className="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
+          className="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none dark:bg-[#181e2e] dark:text-white dark:border-[#232a3d]"
           rows={4}
           placeholder="Describe your career goals and aspirations..."
           value={profile.goals?.shortTerm || ''}
@@ -427,9 +427,9 @@ const GoalsAssessment: React.FC<GoalsAssessmentProps> = ({ profile, setProfile }
       </div>
       
       <div>
-        <h4 className="text-lg font-semibold text-gray-900 mb-4">Salary Expectations</h4>
+        <h4 className="text-lg font-semibold text-gray-900 mb-4 dark:text-white">Salary Expectations</h4>
         <select
-          className="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          className="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#181e2e] dark:text-white dark:border-[#232a3d]"
           value={profile.preferences?.salaryRange || ''}
           onChange={(e) => setProfile({
             ...profile,
@@ -461,7 +461,7 @@ const PreferencesAssessment: React.FC<PreferencesAssessmentProps> = ({ profile, 
   return (
     <div className="space-y-6">
       <div>
-        <h4 className="text-lg font-semibold text-gray-900 mb-4">Work Environment</h4>
+        <h4 className="text-lg font-semibold text-gray-900 mb-4 dark:text-white">Work Environment</h4>
         <div className="grid grid-cols-2 gap-3">
           {workEnvironments.map(env => (
             <button
@@ -472,8 +472,8 @@ const PreferencesAssessment: React.FC<PreferencesAssessmentProps> = ({ profile, 
               })}
               className={`p-3 rounded-xl border-2 font-medium transition-all duration-200 ${
                 profile.preferences?.workEnvironment === env
-                  ? 'border-blue-500 bg-blue-50 text-blue-700'
-                  : 'border-gray-300 text-gray-700 hover:border-gray-400'
+                  ? 'border-blue-500 bg-blue-50 text-blue-700 dark:bg-blue-900 dark:text-white'
+                  : 'border-gray-300 text-gray-700 hover:border-gray-400 dark:bg-[#181e2e] dark:text-white dark:border-[#232a3d]'
               }`}
             >
               {env}
@@ -483,7 +483,7 @@ const PreferencesAssessment: React.FC<PreferencesAssessmentProps> = ({ profile, 
       </div>
 
       <div>
-        <h4 className="text-lg font-semibold text-gray-900 mb-4">Company Size</h4>
+        <h4 className="text-lg font-semibold text-gray-900 mb-4 dark:text-white">Company Size</h4>
         <div className="grid grid-cols-2 gap-3">
           {companySizes.map(size => (
             <button
@@ -494,8 +494,8 @@ const PreferencesAssessment: React.FC<PreferencesAssessmentProps> = ({ profile, 
               })}
               className={`p-3 rounded-xl border-2 font-medium transition-all duration-200 ${
                 profile.preferences?.companySize === size
-                  ? 'border-green-500 bg-green-50 text-green-700'
-                  : 'border-gray-300 text-gray-700 hover:border-gray-400'
+                  ? 'border-green-500 bg-green-50 text-green-700 dark:bg-green-900 dark:text-white'
+                  : 'border-gray-300 text-gray-700 hover:border-gray-400 dark:bg-[#181e2e] dark:text-white dark:border-[#232a3d]'
               }`}
             >
               {size}

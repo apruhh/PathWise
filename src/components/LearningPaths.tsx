@@ -201,8 +201,8 @@ const LearningPaths: React.FC<LearningPathsProps> = ({ userProfile }) => {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">Learning Paths</h2>
-        <p className="text-gray-600">Personalized learning journeys to achieve your career goals</p>
+  <h2 className="text-2xl font-bold text-gray-900 mb-2 dark:text-white">Learning Paths</h2>
+  <p className="text-gray-600 dark:text-gray-300">Personalized learning journeys to achieve your career goals</p>
       </div>
 
       {/* Learning Path Cards */}
@@ -210,7 +210,7 @@ const LearningPaths: React.FC<LearningPathsProps> = ({ userProfile }) => {
         {learningPaths.map(path => (
           <div
             key={path.id}
-            className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-200 cursor-pointer"
+            className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-200 cursor-pointer dark:bg-[#1a2233] dark:border-[#232a3d] dark:text-white"
             onClick={() => setSelectedPath(path)}
           >
             <div className="flex items-center justify-between mb-4">
@@ -222,30 +222,30 @@ const LearningPaths: React.FC<LearningPathsProps> = ({ userProfile }) => {
               </span>
             </div>
 
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">{path.title}</h3>
-            <p className="text-gray-600 text-sm mb-4 line-clamp-3">{path.description}</p>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2 dark:text-white">{path.title}</h3>
+            <p className="text-gray-600 text-sm mb-4 line-clamp-3 dark:text-white">{path.description}</p>
 
             <div className="space-y-2 mb-4">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-600">Target Career:</span>
-                <span className="font-medium text-blue-600">{path.targetCareer}</span>
+                <span className="text-gray-600 dark:text-white">Target Career:</span>
+                <span className="font-medium text-blue-600 dark:text-white">{path.targetCareer}</span>
               </div>
               <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-600">Duration:</span>
-                <span className="font-medium text-gray-900">{path.estimatedTime}</span>
+                <span className="text-gray-600 dark:text-white">Duration:</span>
+                <span className="font-medium text-gray-900 dark:text-white">{path.estimatedTime}</span>
               </div>
               <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-600">Resources:</span>
-                <span className="font-medium text-gray-900">{path.resources.length} items</span>
+                <span className="text-gray-600 dark:text-white">Resources:</span>
+                <span className="font-medium text-gray-900 dark:text-white">{path.resources.length} items</span>
               </div>
             </div>
 
             <div className="border-t pt-4">
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">Progress</span>
-                <span className="text-sm font-medium text-blue-600">0%</span>
+                <span className="text-sm text-gray-600 dark:text-white">Progress</span>
+                <span className="text-sm font-medium text-blue-600 dark:text-white">0%</span>
               </div>
-              <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
+              <div className="w-full bg-gray-200 rounded-full h-2 mt-2 dark:bg-gray-700">
                 <div className="bg-gradient-to-r from-blue-600 to-indigo-600 h-2 rounded-full w-0"></div>
               </div>
             </div>
@@ -254,20 +254,20 @@ const LearningPaths: React.FC<LearningPathsProps> = ({ userProfile }) => {
       </div>
 
       {/* Skill Gap Analysis */}
-      <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-        <h3 className="text-xl font-semibold text-gray-900 mb-4">Skill Gap Analysis</h3>
+  <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 dark:bg-[#181e2a] dark:border-[#232a3d] dark:text-white">
+  <h3 className="text-xl font-semibold text-gray-900 mb-4 dark:text-white">Skill Gap Analysis</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="text-center p-4 bg-red-50 rounded-xl">
-            <div className="text-2xl font-bold text-red-600 mb-2">5</div>
-            <p className="text-sm text-red-700">Skills to Develop</p>
+          <div className="text-center p-4 bg-red-50 rounded-xl dark:bg-[#1e1e2e] dark:border dark:border-[#232a3d]">
+            <div className="text-2xl font-bold text-red-600 mb-2 dark:text-[#f87171]">5</div>
+            <p className="text-sm text-red-700 dark:text-white">Skills to Develop</p>
           </div>
-          <div className="text-center p-4 bg-yellow-50 rounded-xl">
-            <div className="text-2xl font-bold text-yellow-600 mb-2">3</div>
-            <p className="text-sm text-yellow-700">Skills to Improve</p>
+          <div className="text-center p-4 bg-yellow-50 rounded-xl dark:bg-[#1e1e2e] dark:border dark:border-[#232a3d]">
+            <div className="text-2xl font-bold text-yellow-600 mb-2 dark:text-[#fde047]">3</div>
+            <p className="text-sm text-yellow-700 dark:text-white">Skills to Improve</p>
           </div>
-          <div className="text-center p-4 bg-green-50 rounded-xl">
-            <div className="text-2xl font-bold text-green-600 mb-2">8</div>
-            <p className="text-sm text-green-700">Skills Mastered</p>
+          <div className="text-center p-4 bg-green-50 rounded-xl dark:bg-[#1e1e2e] dark:border dark:border-[#232a3d]">
+            <div className="text-2xl font-bold text-green-600 mb-2 dark:text-[#4ade80]">8</div>
+            <p className="text-sm text-green-700 dark:text-white">Skills Mastered</p>
           </div>
         </div>
       </div>
