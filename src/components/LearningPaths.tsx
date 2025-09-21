@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BookOpen, Clock, Star, Play, CheckCircle, Award, TrendingUp, ExternalLink } from 'lucide-react';
+import { BookOpen, Clock, Star, Play, CheckCircle, Award, TrendingUp, ExternalLink, Sparkles, Loader2 } from 'lucide-react';
 import { UserProfile } from '../types/user';
 
 interface LearningPathsProps {
@@ -31,9 +31,88 @@ interface LearningPath {
   milestones: string[];
 }
 
+interface GeneratedLearningStep {
+  step: number;
+  title: string;
+  description: string;
+  duration: string;
+}
+
+interface GeneratedLearningPath {
+  learningPath: GeneratedLearningStep[] | null;
+  rawResponse?: string;
+  message?: string;
+}
+
 const LearningPaths: React.FC<LearningPathsProps> = ({ userProfile }) => {
   const [selectedPath, setSelectedPath] = useState<LearningPath | null>(null);
   const [completedResources, setCompletedResources] = useState<Set<string>>(new Set());
+  const [generatedPath, setGeneratedPath] = useState<GeneratedLearningStep[] | null>(null);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [generationError, setGenerationError] = useState<string | null>(null);
+
+  // Generate personalized learning path using AI
+  const generatePersonalizedPath = async () => {
+    console.log('🚀 [FRONTEND] Starting learning path generation...');
+    setIsGenerating(true);
+    setGenerationError(null);
+    
+    try {
+      // Extract skills, interests, and weaknesses from user profile
+      const skills = userProfile.skills.technical.map(skill => skill.name);
+      const interests = userProfile.interests.map(interest => interest.category);
+      const weaknesses = userProfile.skills.technical
+        .filter(skill => skill.proficiency < 3)
+        .map(skill => skill.name);
+
+      console.log('📝 [FRONTEND] Extracted data:', { skills, interests, weaknesses });
+
+      const requestBody = {
+        skills,
+        interests,
+        weaknesses
+      };
+
+      console.log('📤 [FRONTEND] Sending request to:', 'http://localhost:3001/api/generate-path');
+      console.log('📤 [FRONTEND] Request body:', JSON.stringify(requestBody, null, 2));
+
+      const response = await fetch('http://localhost:3001/api/generate-path', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody)
+      });
+
+      console.log('📥 [FRONTEND] Response status:', response.status);
+      console.log('📥 [FRONTEND] Response headers:', Object.fromEntries(response.headers.entries()));
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('❌ [FRONTEND] HTTP error response:', errorText);
+        throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
+      }
+
+      const data: GeneratedLearningPath = await response.json();
+      console.log('📥 [FRONTEND] Response data:', data);
+      
+      if (data.learningPath) {
+        console.log('✅ [FRONTEND] Successfully received learning path with', data.learningPath.length, 'steps');
+        setGeneratedPath(data.learningPath);
+      } else {
+        console.log('⚠️ [FRONTEND] No learning path in response, message:', data.message);
+        setGenerationError(data.message || 'Failed to generate learning path');
+        console.error('Raw response:', data.rawResponse);
+      }
+    } catch (error) {
+      console.error('❌ [FRONTEND] Error generating learning path:', error);
+      console.error('❌ [FRONTEND] Error stack:', error instanceof Error ? error.stack : 'No stack trace');
+      setGenerationError(error instanceof Error ? error.message : 'An unexpected error occurred');
+    } finally {
+      console.log('🏁 [FRONTEND] Learning path generation completed');
+      setIsGenerating(false);
+    }
+  };
 
   // Generate learning paths based on user profile
   const learningPaths: LearningPath[] = [
@@ -200,10 +279,74 @@ const LearningPaths: React.FC<LearningPathsProps> = ({ userProfile }) => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div>
-  <h2 className="text-2xl font-bold text-gray-900 mb-2 dark:text-white">Learning Paths</h2>
-  <p className="text-gray-600 dark:text-gray-300">Personalized learning journeys to achieve your career goals</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2 dark:text-white">Learning Paths</h2>
+          <p className="text-gray-600 dark:text-gray-300">Personalized learning journeys to achieve your career goals</p>
+        </div>
+        <button
+          onClick={generatePersonalizedPath}
+          disabled={isGenerating}
+          className="flex items-center space-x-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {isGenerating ? (
+            <Loader2 className="w-5 h-5 animate-spin" />
+          ) : (
+            <Sparkles className="w-5 h-5" />
+          )}
+          <span>{isGenerating ? 'Generating...' : 'Generate Personalized Path'}</span>
+        </button>
       </div>
+
+      {/* Generated Learning Path */}
+      {generatedPath && (
+        <div className="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-xl p-6 border border-purple-200 dark:bg-[#1a1a2e] dark:border-purple-800">
+          <div className="flex items-center space-x-3 mb-4">
+            <div className="bg-gradient-to-r from-purple-600 to-indigo-600 p-2 rounded-lg">
+              <Sparkles className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white">Your Personalized Learning Path</h3>
+              <p className="text-gray-600 dark:text-gray-300">AI-generated based on your skills, interests, and areas for improvement</p>
+            </div>
+          </div>
+          
+          <div className="space-y-4">
+            {generatedPath.map((step, index) => (
+              <div key={index} className="bg-white rounded-lg p-4 border border-gray-200 dark:bg-[#16213e] dark:border-gray-700">
+                <div className="flex items-start space-x-4">
+                  <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-full flex items-center justify-center text-sm font-bold">
+                    {step.step}
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">{step.title}</h4>
+                    <p className="text-gray-600 dark:text-gray-300 mb-3">{step.description}</p>
+                    <div className="flex items-center space-x-2 text-sm text-purple-600 dark:text-purple-400">
+                      <Clock className="w-4 h-4" />
+                      <span className="font-medium">Duration: {step.duration}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Generation Error */}
+      {generationError && (
+        <div className="bg-red-50 border border-red-200 rounded-xl p-4 dark:bg-red-900/20 dark:border-red-800">
+          <div className="flex items-center space-x-2">
+            <div className="w-5 h-5 bg-red-500 rounded-full flex items-center justify-center">
+              <span className="text-white text-xs font-bold">!</span>
+            </div>
+            <div>
+              <h4 className="font-semibold text-red-800 dark:text-red-200">Generation Error</h4>
+              <p className="text-red-700 dark:text-red-300 text-sm">{generationError}</p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Learning Path Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
